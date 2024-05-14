@@ -1,5 +1,6 @@
 import express from 'express';
 import Products from '../schemas/products.js';
+import Joi from 'joi';
 
 const router = express.Router();
 
@@ -88,5 +89,35 @@ router.post('/', async (req, res) => {
     date: responseProducts,
   });
 });
+
+//PUT/products/:id
+
+//DELETE/products/:id
+router.delete('/:id', async (req, res) => {
+    const params = req.params;
+    const productId = params.id;
+    const password = req.body;
+  
+    const productItem = await Products.findOne({ _id: productId},
+        { _id : 1,
+          password : 1,}).exec();
+
+    if(password.password !== productItem.password) {
+        return res.status(400).json({
+            status: 400,
+            message: '비밀번호가 일치하지 않습니다.'
+        });
+    }
+
+    await Products.deleteOne({ _id: productId });
+
+    return res.status(200).json({
+      status: 200,
+      message: '상품 삭제에 성공했습니다.',
+      date : {
+        id: productItem._id,
+      }
+    });
+  });
 
 export default router;
