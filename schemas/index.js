@@ -1,9 +1,12 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const connect = () => {
   mongoose
     .connect(
-      'mongodb+srv://ju83144:1234qwer@cluster0.70b0car.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+      `mongodb+srv://${process.env.DB_ID}:${process.env.DB_PW}@cluster0.70b0car.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
       {
         dbName: 'node_prj1',
       },
