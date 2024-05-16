@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
+//Joi 유효값 체크
 const createProductSchema = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().required(),
@@ -109,13 +110,14 @@ router.post('/', async (req, res, next) => {
       return res.status(400).json({ errorMessage: '이미 등록 된 상품입니다.' });
     }
 
+    //비밀번호 해싱
     const hashPassword = await bcrypt.hash(password, 10);
 
     const createdProducts = await Products.create({
       name,
       description,
       manager,
-      password : hashPassword,
+      password: hashPassword,
       status: 'FOR_SALE',
     });
 
@@ -170,6 +172,7 @@ router.put('/:id', async (req, res, next) => {
       });
     }
 
+    //비밀번호 비교
     const isPassword = await bcrypt.compare(password, productItem.password);
 
     if (!isPassword) {
@@ -235,6 +238,7 @@ router.delete('/:id', async (req, res, next) => {
       });
     }
 
+    //비밀번호 비교
     const isPassword = await bcrypt.compare(password, productItem.password);
 
     if (!isPassword) {
