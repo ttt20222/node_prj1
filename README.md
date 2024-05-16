@@ -16,4 +16,4 @@
 |상품 삭제|DELETE|/products:id|
 
 ### 주소
-http://52.78.75.94:3000
+http://52.78.75.94:3000/products
