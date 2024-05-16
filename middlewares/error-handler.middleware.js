@@ -20,7 +20,7 @@ export default function (err, req, res, next) {
         errorMessage = '상품 상태는 [FOR_SALE,SOLD_OUT] 중 하나여야 합니다.';
         break;
       default:
-        errorMessage = '잘못된 입력값입니다.';
+        errorMessage = '상품 정보를 모두 입력해 주세요.';
     }
     return res.status(400).json({
       errorMessage,

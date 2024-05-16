@@ -1,6 +1,7 @@
 import express from 'express';
 import Products from '../schemas/products.js';
 import Joi from 'joi';
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
@@ -108,11 +109,13 @@ router.post('/', async (req, res, next) => {
       return res.status(400).json({ errorMessage: '이미 등록 된 상품입니다.' });
     }
 
+    const hashPassword = await bcrypt.hash(password, 10);
+
     const createdProducts = await Products.create({
       name,
       description,
       manager,
-      password,
+      password : hashPassword,
       status: 'FOR_SALE',
     });
 
@@ -161,13 +164,15 @@ router.put('/:id', async (req, res, next) => {
     ).exec();
 
     if (!productItem) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(404).json({
+        status: 404,
         message: '상품이 존재하지 않습니다.',
       });
     }
 
-    if (password !== productItem.password) {
+    const isPassword = await bcrypt.compare(password, productItem.password);
+
+    if (!isPassword) {
       return res.status(401).json({
         status: 401,
         massage: '비밀번호가 일치하지 않습니다.',
@@ -230,7 +235,9 @@ router.delete('/:id', async (req, res, next) => {
       });
     }
 
-    if (password !== productItem.password) {
+    const isPassword = await bcrypt.compare(password, productItem.password);
+
+    if (!isPassword) {
       return res.status(401).json({
         status: 401,
         message: '비밀번호가 일치하지 않습니다.',
