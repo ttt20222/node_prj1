@@ -1,4 +1,4 @@
-## Node.js 웹서버 입문 주차 개인 과제
+## 장터 백엔드 서버 만들기
 
 1. **웹 프레임워크**: Express.js
 2. **패키지 매니저**: yarn
@@ -15,5 +15,5 @@
 |상품 수정|PUT|/products:id|
 |상품 삭제|DELETE|/products:id|
 
-### 주소
+### 배포주소
 http://52.78.75.94:3000/products
